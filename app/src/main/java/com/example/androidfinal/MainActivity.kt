@@ -2,16 +2,23 @@ package com.example.androidfinal
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.androidfinal.bd.DbRepositorioCoches
+import com.example.androidfinal.bd.RepositorioCoches
 
 class MainActivity : AppCompatActivity() {
+    lateinit var repositorio : RepositorioCoches
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val repositorio = DbRepositorioCoches(this)
+        repositorio = DbRepositorioCoches(this)
 
         if (repositorio.tamanno() == 0) {
             repositorio.annadeCoches(20)
@@ -38,15 +45,57 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.buttEditar).setOnClickListener {
-            val intent = Intent(this , EditarActivity::class.java)
-            startActivity(intent)
+            dialogoEditar()
         }
 
         findViewById<Button>(R.id.buttEliminar).setOnClickListener {
-            val intent = Intent(this , EliminarActivity::class.java)
-            startActivity(intent)
+            dialogoEliminar()
         }
 
 
+    }
+    fun dialogoEditar() {
+        val entrada = EditText(this)
+        entrada.inputType = InputType.TYPE_CLASS_TEXT
+        AlertDialog.Builder(this)
+            .setTitle("Editar coche")
+            .setMessage("Teclee ID")
+            .setView(entrada)
+            .setPositiveButton("Editar") { dialog, which ->
+                val id = entrada.text.toString().toInt()
+
+                if (repositorio.existe(id)) {
+                    val intent = Intent(this, EditarActivity::class.java)
+                    intent.putExtra("indice", id)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "El id no existe", Toast.LENGTH_LONG).show()
+                }
+
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+
+    fun dialogoEliminar() {
+        val entrada = EditText(this)
+        entrada.inputType = InputType.TYPE_CLASS_TEXT
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar Coche")
+            .setMessage("Teclee ID")
+            .setView(entrada)
+            .setPositiveButton("Eliminar") { dialog, which ->
+
+                if (repositorio.elimina(entrada.text.toString().toInt())) {
+                    Toast.makeText(this, "Eliminado", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, "No se ha encontrado", Toast.LENGTH_LONG).show()
+                }
+
+            }
+
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }

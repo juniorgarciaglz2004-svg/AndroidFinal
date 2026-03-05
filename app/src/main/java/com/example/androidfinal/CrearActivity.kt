@@ -3,6 +3,7 @@ package com.example.androidfinal
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -32,8 +33,20 @@ class CrearActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnGuardar).setOnClickListener {
-            bd.adiciona(Coche(modelo.text.toString(),marca.text.toString(),anno.text.toString().toInt(),caracteristicas.text.toString()))
-            finish()
+            val annoValue = anno.text.toString().trim()
+            val coche = Coche(
+                id = 0,
+                modelo = modelo.text.toString(),
+                marca = marca.text.toString(),
+                anno = if (annoValue.isEmpty())  0 else  annoValue.toInt(),
+                caracteristicas = caracteristicas.text.toString())
+
+            if (coche.esValido()) {
+                bd.adiciona(coche)
+                finish()
+            } else {
+                Toast.makeText(this, "Teclee todos los campos", Toast.LENGTH_LONG).show()
+            }
         }
 
     }

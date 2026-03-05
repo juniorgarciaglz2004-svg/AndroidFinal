@@ -64,7 +64,7 @@ class DbRepositorioCoches(context: Context): RepositorioCoches {
         Log.d("INSERT BBDD", "Insertado ${coche.modelo} en $nuevoID")
     }
 
-    override fun actualiza(id: Int, coche: Coche) {
+    override fun actualiza(coche: Coche) {
         val db = helper.writableDatabase
 
         val valores = ContentValues().apply {
@@ -75,7 +75,7 @@ class DbRepositorioCoches(context: Context): RepositorioCoches {
         }
 
         val where = "${BaseColumns._ID} = ?"
-        val arrayArgs = arrayOf("${id + 1}")
+        val arrayArgs = arrayOf("${coche.id}")
 
         db.update(
             CocheEntry.TABLE_NAME,
@@ -85,21 +85,23 @@ class DbRepositorioCoches(context: Context): RepositorioCoches {
         )
     }
 
-    override fun elimina(id: Int) {
+    override fun elimina(id: Int) : Boolean {
         val db = helper.writableDatabase
 
         val where = "${BaseColumns._ID} = ?"
-        val arrayArgs = arrayOf("${id + 1}")
+        val arrayArgs = arrayOf("$id")
 
-        db.delete(
+        return db.delete(
             CocheEntry.TABLE_NAME,
             where,
             arrayArgs
-        )
+        ) > 0
     }
 
     override fun elemento(id: Int): Coche {
         val db = helper.readableDatabase
+
+        Log.d("elemento", "Buscando id ${id}")
 
         val columnas = arrayOf(
             BaseColumns._ID,
@@ -110,7 +112,7 @@ class DbRepositorioCoches(context: Context): RepositorioCoches {
         )
 
         val condicion = "${BaseColumns._ID} = ?"
-        val argumentos = arrayOf("${id + 1}")
+        val argumentos = arrayOf("${id}")
 
         val cursor = db.query(
             CocheEntry.TABLE_NAME,
@@ -124,12 +126,14 @@ class DbRepositorioCoches(context: Context): RepositorioCoches {
 
         cursor.moveToNext()
         val r = Coche(
+            cursor.getInt(0),
             cursor.getString(1),
             cursor.getString(2),
             cursor.getInt(3),
             cursor.getString(4)
         )
 
+        Log.d("Coche", r.toString())
         cursor.close()
         return r
     }
@@ -139,5 +143,56 @@ class DbRepositorioCoches(context: Context): RepositorioCoches {
         val sentencia = db.compileStatement(
             "SELECT COUNT(*) FROM ${CocheEntry.TABLE_NAME}")
         return sentencia.simpleQueryForLong().toInt()
+    }
+
+    override fun listado(): List<Coche> {
+        val db = helper.readableDatabase
+
+        val columnas = arrayOf(
+            BaseColumns._ID,
+            CocheEntry.COL_NAME_MODELO,
+            CocheEntry.COL_NAME_MARCA,
+            CocheEntry.COL_NAME_ANNO,
+            CocheEntry.COL_NAME_CARACTERISTICAS
+        )
+
+        val cursor = db.query(
+            CocheEntry.TABLE_NAME,
+            columnas,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        val resultado = arrayListOf<Coche>()
+
+        while(cursor.moveToNext()) {
+
+            resultado.add(Coche(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getInt(3),
+                cursor.getString(4)
+            ))
+        }
+
+        cursor.close()
+        return resultado
+    }
+
+    override fun existe(id: Int): Boolean {
+        val db = helper.readableDatabase
+        val query = "SELECT COUNT(*) FROM ${CocheEntry.TABLE_NAME} WHERE ${BaseColumns._ID} = ?"
+        val cursor = db.rawQuery(query, arrayOf(id.toString()))
+
+        var existe = false
+        if (cursor.moveToFirst()) {
+            existe = cursor.getInt(0) > 0
+        }
+        cursor.close()
+        return existe
     }
 }

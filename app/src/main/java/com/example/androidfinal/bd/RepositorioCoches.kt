@@ -5,10 +5,12 @@ import kotlin.random.Random
 
 interface RepositorioCoches {
     fun adiciona(coche: Coche)
-    fun actualiza(id: Int, coche: Coche)
-    fun elimina(id: Int)
+    fun actualiza( coche: Coche)
+    fun elimina(id: Int) : Boolean
     fun elemento(id: Int): Coche
     fun tamanno(): Int
+    fun listado() : List<Coche>
+    fun existe(id: Int): Boolean
 
     fun annadeCoches(cantidad: Int) {
         val marcas = listOf(
@@ -64,7 +66,7 @@ interface RepositorioCoches {
 
             val caracteristicas = caracteristicasSeleccionadas.joinToString(", ")
 
-            adiciona(Coche(modelo, marca, anno, caracteristicas))
+            adiciona(Coche( modelo = modelo, marca = marca, anno = anno, caracteristicas = caracteristicas))
         }
     }
 }
