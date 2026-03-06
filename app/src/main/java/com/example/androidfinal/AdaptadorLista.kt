@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidfinal.bd.DbRepositorioCoches
+import com.example.androidfinal.modelos.Coche
 
 
 class AdaptadorLista(val contexto: Context,
+                     private val onLinkClick: (Coche) -> Unit,
                      val inflador: LayoutInflater = contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
     : RecyclerView.Adapter<AdaptadorLista.CreadorItems>() {
 
@@ -30,7 +31,11 @@ class AdaptadorLista(val contexto: Context,
         position: Int
     ) {
         val coche = listado[position]
-        holder.modelo.text = "${coche.modelo} (${coche.id})"
+        val iconoBusqueda = "\uD83D\uDD0D"
+        holder.modelo.text = "${coche.modelo} (${coche.id}) ${iconoBusqueda}"
+        holder.modelo.setOnClickListener {
+            onLinkClick(coche)
+        }
         holder.marca.text = coche.marca
         holder.anno.text = coche.anno.toString()
         holder.caracteristicas.text = coche.caracteristicas

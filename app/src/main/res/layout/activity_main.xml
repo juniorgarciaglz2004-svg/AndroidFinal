@@ -8,13 +8,38 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/buttEditar"
-        android:layout_width="wrap_content"
+        android:id="@+id/butCodigo"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:text="Editar"
+        android:layout_marginTop="60dp"
+        android:text="Ver Codigo Proyecto"
+        app:icon="@android:drawable/star_big_on"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/butMapaConcesionarios" />
+
+    <Button
+        android:id="@+id/butMapaConcesionarios"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Ver Consesionarios"
+        app:icon="@android:drawable/ic_dialog_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttEliminar" />
+
+    <Button
+        android:id="@+id/buttEditar"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Editar"
+        app:icon="@android:drawable/ic_menu_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttCrear" />
 
@@ -35,33 +60,38 @@
 
     <Button
         android:id="@+id/buttCrear"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="60dp"
         android:text="Crear"
+        app:icon="@android:drawable/ic_input_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttverLista" />
 
     <Button
         android:id="@+id/buttEliminar"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:text="Eliminar"
+        app:icon="@android:drawable/ic_menu_delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttEditar" />
 
     <Button
         android:id="@+id/buttverLista"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="52dp"
         android:text="VerLista"
+        android:textAlignment="center"
+        app:icon="@android:drawable/ic_menu_view"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.androidfinal
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Button
@@ -9,10 +10,12 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.androidfinal.bd.DbRepositorioCoches
 import com.example.androidfinal.bd.RepositorioCoches
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var repositorio : RepositorioCoches
@@ -36,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.buttverLista).setOnClickListener {
             val intent = Intent(this , VerListaActivity::class.java)
             startActivity(intent)
-
         }
 
         findViewById<Button>(R.id.buttCrear).setOnClickListener {
@@ -52,7 +54,18 @@ class MainActivity : AppCompatActivity() {
             dialogoEliminar()
         }
 
+        findViewById<Button>(R.id.butMapaConcesionarios).setOnClickListener {
+            val url = "geo:0,0?q=concesionarios+de+coches+en+Zaragoza".toUri()
+            val mapIntent = Intent(Intent.ACTION_VIEW, url)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
 
+        findViewById<Button>(R.id.butCodigo).setOnClickListener {
+            val url = "https://github.com/juniorgarciaglz2004-svg/AndroidFinal.git".toUri()
+            val intent = Intent(Intent.ACTION_VIEW, url)
+            startActivity(intent)
+        }
     }
     fun dialogoEditar() {
         val entrada = EditText(this)
@@ -94,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
-
             .setNegativeButton("Cancelar", null)
             .show()
     }
