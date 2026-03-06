@@ -1,41 +1,47 @@
 package com.example.androidfinal
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class VerListaActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_ver_lista)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        // Configurar Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_lista)
+        setSupportActionBar(toolbar)
+
+        // Configurar título de la toolbar
+        supportActionBar?.title = "Lista de Coches"
+
+        // Configurar RecyclerView
         val recycler = findViewById<RecyclerView>(R.id.lista)
         val adaptador = AdaptadorLista(this)
         recycler.adapter = adaptador
-        val layoutManager = LinearLayoutManager(this)
-        recycler.setLayoutManager(layoutManager)
+        recycler.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_lista, menu)
-        return super.onCreateOptionsMenu(menu)
+        return true // Cambiado a true en lugar de super
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.toolbar_annadir -> controller.crearPersonaje()
-//        }
-        return true
+        return when (item.itemId) {
+            R.id.toolbar_annadir -> {
+                val intent = Intent(this, CrearActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
